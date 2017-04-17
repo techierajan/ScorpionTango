@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:id="@+id/connect"
+      android:enabled="true"
+      android:title="Connect bot"
+      android:icon="@drawable/ic_settings_input_hdmi_black_48dp"/>
+    <item android:id="@+id/disconnect"
+          android:enabled="true"
+          android:title="Disconnect bot"
+          android:icon="@drawable/ic_remove_circle_outline_black_48dp"/>
+    <item android:id="@+id/start_tracking"
+          android:enabled="true"
+          android:title="PathFinder"
+          android:icon="@drawable/ic_location_on_black_48dp"/>
+    <item android:id="@+id/stop_tracking"
+          android:enabled="true"
+          android:title="Stop PathFinder"
+          android:icon="@drawable/ic_location_off_black_48dp"/>
+    <item android:id="@+id/show_track"
+          android:enabled="true"
+          android:title="Back Navigation"
+          android:icon="@drawable/ic_location_off_black_48dp"/>
+</menu>

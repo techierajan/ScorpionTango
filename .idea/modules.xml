@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ScorpionTango.iml" filepath="$PROJECT_DIR$/ScorpionTango.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ScorpionTangoGit.iml" filepath="$PROJECT_DIR$/ScorpionTangoGit.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
