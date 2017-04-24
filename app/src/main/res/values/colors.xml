@@ -3,4 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="defaultVerboseColor">#0093C4</color>
+    <color name="defaultDebugColor">#FF6B68</color>
+    <color name="defaultErrorColor">#22BB00</color>
+    <color name="defaultInfoColor">#FFFFFF</color>
+    <color name="defaultWarningColor">#BB7D0E</color>
+
+    <color name="defaultTextColor">#FFFFFF</color>
+    <color name="defaultConsoleColor">#000000</color>
 </resources>

@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.felhr.usbserial.UsbSerialDevice;
 import com.felhr.usbserial.UsbSerialInterface;
+import com.felhr.usbserial.UsbSerialInterface.UsbReadCallback;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -21,21 +22,24 @@ import tango.rajantechie.us.scorpiontango.CommandsLobot;
 
 /**
  * Created by rajan on 4/16/2017.
+ * Manages all USB connections
  */
 
 public class UsbController {
 
 private static final String TAG = UsbController.class.getSimpleName();
-String ACTION_USB_PERMISSION = "tango.rajantechie.us.scorpiontango.USB_PERMISSION";
-static int BAUD_RATE = 115200;
-UsbManager mUsbManager;
-UsbDevice mUsbDevice;
-UsbSerialDevice mUsbSerialPort;
-UsbDeviceConnection mUsbDeviceConnection;
-UsbCallbacks mCallbacks;
-boolean serialReady = false;
-Context mContext;
+private String ACTION_USB_PERMISSION = "tango.rajantechie.us.scorpiontango.USB_PERMISSION";
+private static int BAUD_RATE = 115200;
+private UsbManager mUsbManager;
+private UsbDevice mUsbDevice;
+private UsbSerialDevice mUsbSerialPort;
+private UsbDeviceConnection mUsbDeviceConnection;
+private UsbCallbacks mCallbacks;
+private boolean serialReady = false;
+private Context mContext;
 private int mVendorID;
+private UsbReadCallback mReadCallback;
+
 
 public void setVendorID(int id) {
     this.mVendorID = id;
@@ -48,6 +52,12 @@ public void log(String message) {
 public UsbController(Context context) {
     this.mContext = context;
     mUsbManager = (UsbManager) context.getSystemService(Context.USB_SERVICE);
+    mReadCallback = new UsbReadCallback() {
+        @Override
+        public void onReceivedData(byte[] bytes) {
+            mCallbacks.onSerialRecieved(bytes);
+        }
+    };
 }
 
 public void setCallbackListener(UsbCallbacks callbacks) {
@@ -71,18 +81,19 @@ public boolean isSerialReady() {
 public void onPause() {
     if (serialReady) {
         sendSerialData(CommandsLobot.STOP.getBytes());
-        closeSerialport();
+        closeSerialPort();
     }
     try {
         mContext.unregisterReceiver(mUsbBroadcast);
     } catch (Exception e) {
+        Log.d(TAG, "onPause: " + e.getMessage());
     }
 
     serialReady = false;
 }
 
 
-public void init() {
+private void init() {
     HashMap<String, UsbDevice> usbDevices = mUsbManager.getDeviceList();
     if (!usbDevices.isEmpty()) {
         for (Map.Entry<String, UsbDevice> entry : usbDevices.entrySet()) {
@@ -103,7 +114,7 @@ public void init() {
 }
 
 
-public void closeSerialport() {
+private void closeSerialPort() {
     if (mUsbSerialPort != null)
         mUsbSerialPort.close();
     serialReady = false;
@@ -114,13 +125,6 @@ public boolean sendSerialData(byte[] data) {
     else return false;
     return true;
 }
-
-UsbSerialInterface.UsbReadCallback mReadCallback = new UsbSerialInterface.UsbReadCallback() {
-    @Override
-    public void onReceivedData(byte[] bytes) {
-        mCallbacks.onSerialRecieved(bytes);
-    }
-};
 
 public String serialToText(byte[] args) {
     try {

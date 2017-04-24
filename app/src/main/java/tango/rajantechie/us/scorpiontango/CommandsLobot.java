@@ -21,17 +21,18 @@ public static final String STOP = "PL0";
 public static final String SPACE = " ";
 public static final String FIRST = "PL0 SQ1 SM100 ";
 public static final String SEQ = "SQ";
-public static final String DEF_SPD = "SM100";
+public static final String DEF_SPD = "SM100 ";
 public static final String SPD = "SM";
+public static final String ONCE = "ONCE";
 
 
 public static String getNewActionGroup(String action) {
-    return STOP + SPACE + SEQ + action +SPACE+ DEF_SPD;
+    return STOP + SPACE + SEQ + action + SPACE + DEF_SPD + ONCE;
 }
 
-public static String getNewActionGroup(String action, String speed) {
-    return STOP + SPACE + SEQ +SPACE+ action + speed;
-}
+/*public static String getNewActionGroup(String action, String speed) {
+    return STOP + SPACE + SEQ + SPACE + action + speed;
+}*/
 
 }
 

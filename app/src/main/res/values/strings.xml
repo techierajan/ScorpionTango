@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">ScorpionTango</string>
     <string name="action_settings">Settings</string>
+    <string name="logview">Toggle Logs</string>
+    <string name="sign_out">Sign out</string>
+    <string name="init">Starting</string>
+    <string name="sign_in">Sign in</string>
+    <string name="welcome">Welcome</string>
+    <string name="slave">Not Applicable for Slave</string>
+    <string name="shutdown">Shutting down Master</string>
+    <string name="start">Starting Master</string>
 </resources>
