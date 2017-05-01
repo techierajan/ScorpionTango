@@ -37,7 +37,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import tango.rajantechie.us.scorpiontango.R;
+import tango.rajantechie.us.scorpiontango.R2;
 
 public class SignInActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
@@ -47,17 +50,14 @@ private static final int RC_SIGN_IN = 9001;
 
 private GoogleApiClient mGoogleApiClient;
 private FirebaseAuth mFirebaseAuth;
+@BindView(R2.id.sign_in_button) SignInButton signInButton;
 
 @Override
 protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_sign_in);
-
-    // Assign fields
-    SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-    // Set click listeners
+    ButterKnife.bind(this);
     signInButton.setOnClickListener(this);
-
     GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()

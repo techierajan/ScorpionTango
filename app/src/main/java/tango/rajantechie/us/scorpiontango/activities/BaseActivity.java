@@ -21,7 +21,7 @@ import tango.rajantechie.us.scorpiontango.usb.UsbController;
 
 public class BaseActivity extends AppCompatActivity {
 
-public static final int WAKLOCK = 109;
+public static final int WAKELOCK = 109;
 public static final int stateChangeTimeoutMs = 500;
 public static PowerManager.WakeLock wl;
 private UsbController mUsbController;
@@ -77,7 +77,7 @@ public void checkAcquireWakeLock() {
 
         ActivityCompat.requestPermissions(this,
                 new String[]{android.Manifest.permission.READ_CONTACTS},
-                WAKLOCK);
+                WAKELOCK);
     } else {
         acquireWakeLock();
     }
@@ -92,7 +92,7 @@ public void acquireWakeLock() {
 @Override
 public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    if (requestCode == WAKLOCK && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+    if (requestCode == WAKELOCK && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
         acquireWakeLock();
     }
 }

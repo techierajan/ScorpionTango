@@ -31,9 +31,12 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import tango.rajantechie.us.scorpiontango.CommandsLobot;
 import tango.rajantechie.us.scorpiontango.R;
+import tango.rajantechie.us.scorpiontango.R2;
 import tango.rajantechie.us.scorpiontango.firebase.BotConfigs;
 import tango.rajantechie.us.scorpiontango.usb.UsbCallbacks;
 import tango.rajantechie.us.scorpiontango.views.LogcatView;
@@ -44,18 +47,25 @@ private static final String TAG = MainActivity.class.getSimpleName();
 
 private Tango mTango;
 private TangoConfig mConfig;
-
 protected String stateString;
 private int timesSeenObstacle;
-TextView mNameView;
 String lastAction = CommandsLobot.REVERSE;
-BottomNavigationView bottomNav;
-CircleImageView mCircleImageView;
-JoyStick mJoyStick;
 JoyStick.JoyStickListener mJoyStickListener;
 private AtomicInteger mPreviousDirection = new AtomicInteger();
 private boolean tangoRunning = false;
-private LogcatView logcatView;
+
+@BindView(R.id.textview)
+TextView mNameView;
+@BindView(R2.id.navigation_bottom)
+BottomNavigationView mBottomNavigationView;
+@BindView(R2.id.circular)
+CircleImageView mCircleImageView;
+@BindView(R2.id.joy2)
+JoyStick mJoyStick;
+@BindView(R2.id.logcat)
+LogcatView mLogcatView;
+@BindView(R.id.toolbar)
+Toolbar mToolbar;
 
 
 public void releaseWakeLock() {
@@ -91,17 +101,16 @@ public boolean onKeyDown(int keyCode, KeyEvent event) {
 protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-    setSupportActionBar(toolbar);
-    mNameView = (TextView) findViewById(R.id.textview);
+    ButterKnife.bind(this);
+    setSupportActionBar(mToolbar);
     mCircleImageView = (CircleImageView) findViewById(R.id.circular);
-    logcatView = (LogcatView) findViewById(R.id.logcat);
+    mLogcatView = (LogcatView) findViewById(R.id.logcat);
     if (getUsbController() != null) getUsbController().setCallbackListener(mCallbacks);
 
     setupJoystick();
 
-    bottomNav = (BottomNavigationView) findViewById(R.id.navigation_bottom);
-    bottomNav.setOnNavigationItemSelectedListener(
+    mBottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation_bottom);
+    mBottomNavigationView.setOnNavigationItemSelectedListener(
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -114,7 +123,7 @@ protected void onCreate(Bundle savedInstanceState) {
                             } else {
                                 BotConfigs bc = new BotConfigs(CommandsLobot.getNewActionGroup(CommandsLobot.FORWARD), 100, false, lastStateChangeMillis);
                                 sendCommand(bc);
-                                Snackbar.make(bottomNav, getString(R.string.start), Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(mBottomNavigationView, getString(R.string.start), Snackbar.LENGTH_SHORT).show();
                             }
                             break;
 
@@ -130,7 +139,7 @@ protected void onCreate(Bundle savedInstanceState) {
                             } else {
                                 BotConfigs bc = new BotConfigs(CommandsLobot.getNewActionGroup(CommandsLobot.STOP), 100, true, lastStateChangeMillis);
                                 sendCommand(bc);
-                                Snackbar.make(bottomNav, getString(R.string.shutdown), Snackbar.LENGTH_SHORT).show();
+                                Snackbar.make(mBottomNavigationView, getString(R.string.shutdown), Snackbar.LENGTH_SHORT).show();
                             }
 
                             break;
@@ -289,7 +298,7 @@ private TangoConfig setupTangoConfig(Tango tango) {
 protected void onPause() {
     super.onPause();
     if (tangoRunning)
-    stopTango();
+        stopTango();
 }
 
 public void stopTango() {
@@ -324,9 +333,9 @@ public boolean onOptionsItemSelected(MenuItem item) {
             return true;
         //noinspection SimplifiableIfStatement
         case R.id.togglelogs:
-            if (logcatView.getVisibility() == View.VISIBLE)
-                logcatView.setVisibility(View.GONE);
-            else logcatView.setVisibility(View.VISIBLE);
+            if (mLogcatView.getVisibility() == View.VISIBLE)
+                mLogcatView.setVisibility(View.GONE);
+            else mLogcatView.setVisibility(View.VISIBLE);
             return true;
         default:
             return super.onOptionsItemSelected(item);
@@ -486,10 +495,9 @@ public void createListeners() {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        if (tangoRunning && isDisabled){
+                                        if (tangoRunning && isDisabled) {
                                             stopTango();
-                                        }
-                                        else if (!tangoRunning && !isDisabled) {
+                                        } else if (!tangoRunning && !isDisabled) {
                                             startTango();
                                         }
                                     }
